@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>zzulu</title>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Barcode+128&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+
+    .container {
+      height: 100%;
+      padding-right: 1rem;
+      padding-left: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    #barcode {
+      font-family: 'Libre Barcode 128', cursive;
+      font-size: 6rem;
+      opacity: 0;
+    }
+
+    @media (min-width: 576px) {
+      #barcode {
+        font-size: 8rem;
+      }
+    }
+
+    @media (min-width: 992px) {
+      #barcode {
+        font-size: 10rem;
+      }
+    }
+
+    #barcode.show {
+      opacity: 1;
+      transition: opacity .5s;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <span id="barcode">Ìzzulu3Î</span>
+  </div>
+
+  <script>
+    document.fonts.ready.then(function () {
+      const barcode = document.getElementById('barcode')
+      barcode.classList.add('show')
+    })
+  </script>
+</body>
+</html>
