@@ -12,6 +12,7 @@
       display: flex;
       justify-content: center;
       align-items: flex-end;
+      overflow: hidden;
     }
 
     .photo {
@@ -56,29 +57,33 @@
       let orientation = window.orientation
       let initialized = false
 
+      window.addEventListener('orientationchange', () => {
+        initialized = false
+      }, false)
+
+      window.addEventListener('deviceorientation', (e) => {
+        if (!initialized) {
+          offset.x = e.gamma.toFixed(2)
+          offset.y = e.beta.toFixed(2)
+          orientation = window.orientation
+          initialized = true
+        }
+
+        const [axisX, axisY] = flipAxis( e.beta.toFixed(2)-offset.y,
+                                         e.gamma.toFixed(2)-offset.x,
+                                         orientation )
+
+        target.style = `filter: drop-shadow(${8+axisY*(-0.75)}px ${8+axisX*(-0.75)}px 4px #ced4da);
+                        transform: perspective(300px) rotateX(${axisX*(-0.15)}deg) rotateY(${axisY*(0.15)}deg);`
+      }, true)
+    }
+
+    const requestPermission = function (target) {
       if (typeof DeviceOrientationEvent.requestPermission === 'function') {
         DeviceOrientationEvent.requestPermission()
           .then(permissionState => {
             if (permissionState === 'granted') {
-              window.addEventListener('orientationchange', () => {
-                initialized = false
-              }, false)
-
-              window.addEventListener('deviceorientation', (e) => {
-                if (!initialized) {
-                  offset.x = e.gamma.toFixed(2)
-                  offset.y = e.beta.toFixed(2)
-                  orientation = window.orientation
-                  initialized = true
-                }
-
-                const [axisX, axisY] = flipAxis( e.beta.toFixed(2)-offset.y,
-                                                 e.gamma.toFixed(2)-offset.x,
-                                                 orientation )
-
-                target.style = `filter: drop-shadow(${8+axisY*(-0.75)}px ${8+axisX*(-0.75)}px 4px #ced4da);
-                                transform: perspective(300px) rotateX(${axisX*(-0.15)}deg) rotateY(${axisY*(0.15)}deg);`
-              }, true)
+              addDeviceOrientationEvent(target)
             }
           })
           .catch(console.error)
@@ -88,7 +93,11 @@
     }
 
     document.getElementById('photo').addEventListener('click', function (e) {
-      addDeviceOrientationEvent(e.target)
+      if (/Android/i.test(navigator.userAgent)) {
+        addDeviceOrientationEvent(e.target)
+      } else {
+        requestPermission(e.target)
+      }
     })
   </script>
 </body>
