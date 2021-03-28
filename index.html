@@ -4,51 +4,91 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>zzulu</title>
-  <link href="https://fonts.googleapis.com/css2?family=Libre+Barcode+39&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; }
-    html, body { height: 100%; margin: 0; }
+    html, body, .container { width: 100%; height: 100%; }
+    body { margin: 0; }
 
     .container {
-      height: 100%;
       display: flex;
       justify-content: center;
-      align-items: center;
-    }
-    
-    #barcode {
-      font-family: 'Libre Barcode 39', cursive;
-      font-size: 5rem;
-      opacity: 0;
+      align-items: flex-end;
     }
 
-    @media (min-width: 576px) {
-      #barcode {
-        font-size: 8rem;
-      }
+    .photo {
+      height: 90%;
+      animation: appear 1.2s;
     }
 
-    @media (min-width: 992px) {
-      #barcode {
-        font-size: 10rem;
-      }
-    }
-
-    #barcode.show {
-      opacity: 1;
-      transition: opacity .5s;
+    @keyframes appear {
+      from { opacity: 0; }
+      to   { opacity: 1; }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <span id="barcode">*ZZULU*</span>
+    <img src="zzulu.png"
+         id="photo"
+         class="photo"
+         style="filter: drop-shadow(8px 8px 4px #ced4da);"
+         alt="Zzulu" />
   </div>
 
   <script>
-    document.fonts.ready.then(function () {
-      const barcode = document.getElementById('barcode')
-      barcode.classList.add('show')
+    const flipAxis = function (x, y, orientation) {
+      if (orientation === 90) {
+        return [y*(-1), x*(1)]
+      }
+
+      if (orientation === -90) {
+        return [y*(1), x*(-1)]
+      }
+
+      if (orientation === 180) {
+        return [x*(-1), y*(-1)]
+      }
+      
+      return [x*(1), y*(1)]
+    }
+
+    const addDeviceOrientationEvent = function (target) {
+      let set = false
+      let orientation = window.orientation
+
+      if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+        DeviceOrientationEvent.requestPermission()
+          .then(permissionState => {
+            if (permissionState === 'granted') {
+              window.addEventListener('orientationchange', () => {
+                set = false
+              }, false)
+
+              window.addEventListener('deviceorientation', (e) => {
+                const offset = { x: 0, y: 0 }
+                if (!set) {
+                  offset.x = e.gamma.toFixed(2)
+                  offset.y = e.beta.toFixed(2)
+                  orientation = window.orientation
+                  set = true
+                }
+
+                const [axisX, axisY] = flipAxis( e.beta.toFixed(2)-offset.y,
+                                                 e.gamma.toFixed(2)-offset.x,
+                                                 orientation )
+
+                target.style = `filter: drop-shadow(${8+axisY*(-0.7)}px ${8+axisX*(-0.7)}px 4px #ced4da);
+                                transform: perspective(300px) rotateX(${axisX*(-0.35)}deg) rotateY(${axisY*(0.35)}deg);`
+              }, true)
+            }
+          })
+          .catch(console.error)
+      } else {
+        console.log('Not Supported!')
+      }
+    }
+
+    document.getElementById('photo').addEventListener('click', function (e) {
+      addDeviceOrientationEvent(e.target)
     })
   </script>
 </body>
