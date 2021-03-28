@@ -73,8 +73,6 @@
                                        e.gamma.toFixed(2)-offset.x,
                                        orientation )
 
-          console.log(`${e.gamma.toFixed(2)} ${e.beta.toFixed(2)} ${offset.x} ${offset.y}`)
-
           target.style = `filter: drop-shadow(${8+axisY*(-0.75)}px ${8+axisX*(-0.75)}px 4px #ced4da);
                           transform: perspective(300px) rotateX(${axisX*(-0.15)}deg) rotateY(${axisY*(0.15)}deg);` 
         } else {
