@@ -12,7 +12,6 @@
       display: flex;
       justify-content: center;
       align-items: flex-end;
-      overflow: hidden;
     }
 
     .photo {
@@ -56,25 +55,31 @@
       const offset = { x: 0, y: 0 }
       let orientation = window.orientation
       let initialized = false
+      let first = true
 
-      window.addEventListener('orientationchange', () => {
+      window.addEventListener('orientationchange', function () {
         initialized = false
       }, false)
 
-      window.addEventListener('deviceorientation', (e) => {
-        if (!initialized) {
-          offset.x = e.gamma.toFixed(2)
-          offset.y = e.beta.toFixed(2)
-          orientation = window.orientation
-          initialized = true
+      window.addEventListener('deviceorientation', function (e) {
+        if (!first) {
+          if (!initialized) {
+            offset.x = e.gamma.toFixed(2)
+            offset.y = e.beta.toFixed(2)
+            orientation = window.orientation
+            initialized = true
+          }
+          const [axisX, axisY] = flipAxis( e.beta.toFixed(2)-offset.y,
+                                       e.gamma.toFixed(2)-offset.x,
+                                       orientation )
+
+          console.log(`${e.gamma.toFixed(2)} ${e.beta.toFixed(2)} ${offset.x} ${offset.y}`)
+
+          target.style = `filter: drop-shadow(${8+axisY*(-0.75)}px ${8+axisX*(-0.75)}px 4px #ced4da);
+                          transform: perspective(300px) rotateX(${axisX*(-0.15)}deg) rotateY(${axisY*(0.15)}deg);` 
+        } else {
+          first = false
         }
-
-        const [axisX, axisY] = flipAxis( e.beta.toFixed(2)-offset.y,
-                                         e.gamma.toFixed(2)-offset.x,
-                                         orientation )
-
-        target.style = `filter: drop-shadow(${8+axisY*(-0.75)}px ${8+axisX*(-0.75)}px 4px #ced4da);
-                        transform: perspective(300px) rotateX(${axisX*(-0.15)}deg) rotateY(${axisY*(0.15)}deg);`
       }, true)
     }
 
@@ -92,11 +97,15 @@
       }
     }
 
+    let eventListenerAdded = false
     document.getElementById('photo').addEventListener('click', function (e) {
-      if (/Android/i.test(navigator.userAgent)) {
-        addDeviceOrientationEvent(e.target)
-      } else {
-        requestPermission(e.target)
+      if (!eventListenerAdded) {
+        if (/Android/i.test(navigator.userAgent)) {
+          addDeviceOrientationEvent(e.target)
+        } else {
+          requestPermission(e.target)
+        }
+        eventListenerAdded = true
       }
     })
   </script>
