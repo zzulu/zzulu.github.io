@@ -15,7 +15,7 @@
     }
 
     .photo {
-      height: 90%;
+      height: 80%;
       animation: appear 1.2s;
     }
 
@@ -52,32 +52,32 @@
     }
 
     const addDeviceOrientationEvent = function (target) {
-      let set = false
+      const offset = { x: 0, y: 0 }
       let orientation = window.orientation
+      let initialized = false
 
       if (typeof DeviceOrientationEvent.requestPermission === 'function') {
         DeviceOrientationEvent.requestPermission()
           .then(permissionState => {
             if (permissionState === 'granted') {
               window.addEventListener('orientationchange', () => {
-                set = false
+                initialized = false
               }, false)
 
               window.addEventListener('deviceorientation', (e) => {
-                const offset = { x: 0, y: 0 }
-                if (!set) {
+                if (!initialized) {
                   offset.x = e.gamma.toFixed(2)
                   offset.y = e.beta.toFixed(2)
                   orientation = window.orientation
-                  set = true
+                  initialized = true
                 }
 
                 const [axisX, axisY] = flipAxis( e.beta.toFixed(2)-offset.y,
                                                  e.gamma.toFixed(2)-offset.x,
                                                  orientation )
 
-                target.style = `filter: drop-shadow(${8+axisY*(-0.7)}px ${8+axisX*(-0.7)}px 4px #ced4da);
-                                transform: perspective(300px) rotateX(${axisX*(-0.35)}deg) rotateY(${axisY*(0.35)}deg);`
+                target.style = `filter: drop-shadow(${8+axisY*(-0.75)}px ${8+axisX*(-0.75)}px 4px #ced4da);
+                                transform: perspective(300px) rotateX(${axisX*(-0.15)}deg) rotateY(${axisY*(0.15)}deg);`
               }, true)
             }
           })
