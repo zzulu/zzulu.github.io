@@ -65,7 +65,10 @@
           const rx = clamp(axisX * -0.15, -15, 15)
           const ry = clamp(axisY *  0.15, -15, 15)
 
-          target.style.setProperty('filter', `drop-shadow(${8+axisY*(-0.75)}px ${8+axisX*(-0.75)}px 4px #ced4da)`)
+          const shadowX = clamp(8 + axisY * -0.75, -20, 20)
+          const shadowY = clamp(8 + axisX * -0.75, -20, 20)
+
+          target.style.setProperty('filter', `drop-shadow(${shadowX}px ${shadowY}px 4px #ced4da)`)
           target.style.setProperty('transform', `perspective(300px) rotateX(${rx}deg) rotateY(${ry}deg)`)
         } else {
           moved = true
