@@ -41,6 +41,8 @@
       return [x*(1), y*(1)]
     }
 
+    const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+
     const addDeviceOrientationEvent = function (target) {
       const offset = { x: 0, y: 0 }
       let orientation = 0
@@ -53,18 +55,18 @@
       window.addEventListener('deviceorientation', function (e) {
         if (moved) {
           if (!initialized) {
-            offset.x = e.gamma.toFixed(2)
-            offset.y = e.beta.toFixed(2)
+            offset.x = e.gamma
+            offset.y = e.beta
             orientation = window.orientation || 0
             initialized = true
           }
 
-          const [axisX, axisY] = flipAxis( e.beta.toFixed(2)-offset.y,
-                                           e.gamma.toFixed(2)-offset.x,
-                                           orientation )
+          const [axisX, axisY] = flipAxis(e.beta - offset.y, e.gamma - offset.x, orientation)
+          const rx = clamp(axisX * -0.15, -15, 15)
+          const ry = clamp(axisY *  0.15, -15, 15)
 
-          target.style = `filter: drop-shadow(${8+axisY*(-0.75)}px ${8+axisX*(-0.75)}px 4px #ced4da);
-                          transform: perspective(300px) rotateX(${axisX*(-0.15)}deg) rotateY(${axisY*(0.15)}deg);` 
+          target.style.setProperty('filter', `drop-shadow(${8+axisY*(-0.75)}px ${8+axisX*(-0.75)}px 4px #ced4da)`)
+          target.style.setProperty('transform', `perspective(300px) rotateX(${rx}deg) rotateY(${ry}deg)`)
         } else {
           moved = true
         }
@@ -72,7 +74,7 @@
     }
 
     const requestPermission = function (target) {
-      if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+      if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
         DeviceOrientationEvent.requestPermission()
           .then(permissionState => {
             if (permissionState === 'granted') {
