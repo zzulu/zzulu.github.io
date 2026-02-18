@@ -1,0 +1,17 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} | {{ site.Title }}{{ end }}</title>
+{{ with site.Params.description }}<meta name="description" content="{{ . }}">{{ end }}
+{{ with site.Params.author }}<meta name="author" content="{{ . }}">{{ end }}
+<script>document.documentElement.setAttribute('data-theme',localStorage.getItem('theme')||'system');</script>
+{{ $css := resources.Get "css/main.css" | minify | fingerprint }}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+{{ $syntaxLight := resources.Get "css/syntax-light.css" | minify | fingerprint }}
+{{ $syntaxDark := resources.Get "css/syntax-dark.css" | minify | fingerprint }}
+<link id="syntax-light" rel="stylesheet" href="{{ $syntaxLight.RelPermalink }}" integrity="{{ $syntaxLight.Data.Integrity }}" media="(prefers-color-scheme: light)">
+<link id="syntax-dark" rel="stylesheet" href="{{ $syntaxDark.RelPermalink }}" integrity="{{ $syntaxDark.Data.Integrity }}" media="(prefers-color-scheme: dark)">
+{{ $js := resources.Get "js/theme.js" | minify | fingerprint }}
+<script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}"></script>
+{{ range .AlternativeOutputFormats }}
+<link rel="{{ .Rel }}" type="{{ .MediaType.Type }}" href="{{ .Permalink }}">
+{{ end }}

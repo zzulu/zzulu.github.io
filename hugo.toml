@@ -1,0 +1,11 @@
+baseURL = 'https://zzu.lu/'
+languageCode = 'ko-kr'
+defaultContentLanguage = 'ko'
+title = 'zzulu'
+
+[markup.highlight]
+  noClasses = false
+
+[caches]
+  [caches.images]
+    dir = ':cacheDir/images'

@@ -1,0 +1,8 @@
+<header class="site-header">
+  <a href="/" class="site-title">{{ site.Title }}</a>
+  <nav class="site-nav">
+    <a href="/now/" class="nav-link{{ if hasPrefix .RelPermalink "/now" }} active{{ end }}">Now</a>
+    <a href="/about/" class="nav-link{{ if hasPrefix .RelPermalink "/about" }} active{{ end }}">About</a>
+  </nav>
+  <button id="theme-toggle" title="시스템">◑</button>
+</header>

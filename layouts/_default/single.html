@@ -1,0 +1,16 @@
+{{ define "main" }}
+<article>
+  <header class="post-header">
+    <h1>{{ .Title }}</h1>
+    {{ if not .Params.hideDate }}<time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>{{ end }}
+    {{ with .Params.tags }}
+    <ul class="tags">
+      {{ range . }}<li><a href="{{ "/tags/" | relURL }}{{ . | urlize }}">{{ . }}</a></li>{{ end }}
+    </ul>
+    {{ end }}
+  </header>
+  <div class="post-content">
+    {{ .Content }}
+  </div>
+</article>
+{{ end }}
