@@ -166,15 +166,14 @@ footer nav a:hover {
 .post-list li {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  padding: 0.3rem 0;
+  gap: 0.75rem;
+  padding: 0.2rem 0;
 }
 
 .post-list time {
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--color-muted);
   white-space: nowrap;
-  font-variant-numeric: tabular-nums;
 }
 
 /* Article */
@@ -290,4 +289,3 @@ article .post-header time {
   color: var(--color-muted);
   margin-bottom: 1rem;
 }
-
