@@ -1,5 +1,5 @@
 baseURL = 'https://zzu.lu/'
-languageCode = 'ko-kr'
+locale = 'ko-KR'
 defaultContentLanguage = 'ko'
 title = 'zzulu'
 
