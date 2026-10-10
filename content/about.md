@@ -8,4 +8,4 @@ hideDate: true
 
 코드잇에서 소프트웨어 교육 콘텐츠를 만들고 있습니다. 주로 JavaScript 기반의 프론트엔드 및 백엔드, 데이터베이스 같은 웹 개발 주제를 다루며 커리큘럼을 설계하고, 학습 흐름을 구조화하는 일을 합니다.
 
-[GitHub](https://github.com/zzulu)
+[GitHub](https://github.com/zzulu) · [Instagram](https://www.instagram.com/zzulu.hwang/)
