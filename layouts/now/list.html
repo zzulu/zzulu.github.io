@@ -1,0 +1,7 @@
+{{ define "main" }}
+{{ with first 1 (.RegularPages.ByDate.Reverse) }}
+  {{ range . }}
+    {{ partial "article.html" . }}
+  {{ end }}
+{{ end }}
+{{ end }}

@@ -16,7 +16,7 @@ hugo new posts/slug.md  # Create a new post from archetype
 
 ## Architecture
 
-**Content:** `content/posts/*.md` for blog posts, `content/about.md` and `content/now.md` for static pages.
+**Content:** `content/posts/*.md` for blog posts, `content/about.md` for the about page, and `content/now/YYYY-MM-DD.md` for dated Now entries. `/now/` displays the latest entry; `/now/archive/` lists all entries. Add a new dated file to update Now while preserving older entries.
 
 **Templates:** `layouts/` contains all Hugo templates. The base layout is `layouts/_default/baseof.html`, which wraps every page with header and footer partials from `layouts/partials/`.
 

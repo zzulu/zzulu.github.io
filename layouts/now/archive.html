@@ -1,0 +1,14 @@
+{{ define "main" }}
+<section class="list">
+  <h1>{{ .Title }}</h1>
+  <ul class="post-list">
+    {{ with site.GetPage "/now" }}
+      {{ range .RegularPages.ByDate.Reverse }}
+      <li>
+        <a href="{{ .RelPermalink }}">{{ .Date.Format "2006년 1월 2일" }}</a>
+      </li>
+      {{ end }}
+    {{ end }}
+  </ul>
+</section>
+{{ end }}
