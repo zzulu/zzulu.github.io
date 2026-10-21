@@ -1,4 +1,4 @@
 ---
-title: '지난 Now'
+title: 'Then'
 layout: 'archive'
 ---
