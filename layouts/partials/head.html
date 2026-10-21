@@ -1,6 +1,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} | {{ site.Title }}{{ end }}</title>
+<title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} — {{ site.Title }}{{ end }}</title>
 {{ with site.Params.description }}<meta name="description" content="{{ . }}">{{ end }}
 {{ with site.Params.author }}<meta name="author" content="{{ . }}">{{ end }}
 <script>document.documentElement.setAttribute('data-theme',localStorage.getItem('theme')||'system');</script>
